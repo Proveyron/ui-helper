@@ -756,7 +756,7 @@
         $('#openExample').on('click', () => {
             $('.msg-b').text('Carregando console, Aguarde...');
             $('.msg-c').text('Pode demorar até 30 segundos.');
-            showOverlayAndRedirect('http://10.10.1.1');
+            showOverlayAndRedirect('https://10.10.1.1');
         }
         );
 
@@ -824,7 +824,7 @@
             url = $('#ip-display').text();
             localStorage.setItem("url", url);
             if (url) {
-                const fullUrl = 'http://' + url;
+                const fullUrl = 'https://' + url;
                 $('.msg-b').text('Carregando console, Aguarde...');
                 $('.msg-c').text('Pode demorar até 30 segundos.');
                 showOverlayAndRedirect(fullUrl);
