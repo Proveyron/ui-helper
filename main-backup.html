@@ -1,0 +1,797 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soundcraft Ui Helper</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#000000" />
+    <style>
+        @font-face {
+            font-family: 'open';
+            src: url('open-sans.ttf');
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 100%;
+            background-image: url(bg2.jpg);
+            background-color: #f0f0f0;
+            background-size: cover;
+            font-family: open;
+            overflow: hidden;
+            color: #212121;
+            flex-direction: column;
+            align-content: center;
+        }
+
+        .container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            width: 450px;
+            text-shadow: 2px 2px 1px black;
+        }
+
+        input#urlInput {
+            padding: 0px 15px;
+            width: 290px;
+            border-radius: 4px;
+            font-family: open;
+            color: #FFF;
+            border: 2px solid #e0e0e0;
+            background-color: #f5f5f51c;
+            font-size: 24px;
+            text-shadow: 2px 2px 1px black;
+            transition: all 0.3s ease;
+        }
+
+        input#urlInput:focus {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background: #000000a6;
+            color: #FFF;
+            text-shadow: 2px 2px 1px black;
+            outline: none;
+            border: 2px solid #e0e0e0;
+        }
+
+        input:-webkit-autofill {
+            background-color: #000000a6 !important;
+            color: #FFF !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            !important; -webkit-text-fill-color: #FFF !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        button {
+            background-color: #000000a6;
+            color: white;
+            border: none;
+            font-size: 3vw;
+            width: 60vw;
+            height: 7.5vw;
+            text-shadow: 2px 2px 1px black;
+            border-radius: 1.5vw;
+            font-weight: bold;
+            border: .3vw solid #e0e0e059;
+            font-family: open;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .help-user, .help-close, .demo-btn, .info-btn, .key-close {
+            /* position: fixed; */
+            bottom: 3.5vw;
+            right: 2vw;
+            background-color: #00000094;
+            color: white;
+            width: 7.5vw;
+            height: 7.5vw;
+            display: flex;
+            border-radius: 1.5vw;
+            font-size: 4vw;
+            font-weight: bold;
+            border: .3vw solid #e0e0e059;
+            font-family: open;
+            cursor: pointer;
+            box-shadow: 1px 1px 10px rgb(0 0 0 / 36%);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay-preto {
+            width: 100%;
+            height: 100%;
+            color: #FFF;
+            font-family: open;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            background: #000;
+            z-index: 3;
+            display: none;
+        }
+
+        .msg {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: open;
+            flex-direction: column;
+        }
+
+        .msg-b {
+            background: #000000;
+            border-radius: 10px;
+            font-size: 5vw;
+            font-family: open;
+        }
+
+        div {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .subcontainer {
+            margin-top: 2vw;
+            flex-direction: row;
+            display: flex;
+            width: 100vw;
+            justify-content: space-around;
+        }
+
+        input:focus-visible {
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #cdcdcd;
+            text-shadow: none;
+        }
+
+        .tutorial-container {
+            width: 100%;
+            height: 100%;
+            padding: 4%;
+            position: fixed;
+            display: flex;
+            background-image: url(bg.jpg);
+            flex-direction: column-reverse;
+            background-size: cover;
+            align-items: center;
+            z-index: 9;
+            justify-content: space-between;
+        }
+
+        h2.header-tutorial {
+            width: 570px;
+            background: #0000008c;
+            margin: 0;
+            border-radius: 5px;
+            height: 20%;
+            width: fit-content;
+            display: flex;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            flex-direction: column;
+        }
+
+        video.background-video {
+            height: 80%;
+            border-radius: 15px;
+        }
+
+        .sys-container {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            left: 0;
+            transition: all .8s ease-in-out;
+            position: fixed;
+            background: #000;
+            transform-origin: left top;
+        }
+
+        .chev-mostrar-zoom {
+            border-radius: 10px;
+            left: calc(54% - 22.5px);
+        }
+
+        .msg-c {
+            font-size: 3vw;
+            margin: 3vw;
+        }
+
+        .menu-chev {
+            background-image: url(down.png);
+            z-index: 2;
+            background-size: 100%;
+            position: fixed;
+            opacity: 40%;
+            width: 8vh;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 8vh;
+            transition: all .8s ease-in-out;
+            left: calc(61%);
+        }
+
+        .mostrar {
+            top: 0%;
+        }
+
+        .nao-mostrar {
+            top: 100%;
+        }
+
+        .zoom-nao-mostrar {
+            top: -30px!important;
+        }
+
+        .chev-nao-mostrar {
+            top: calc(100% - 9.5vh) !important;
+            transform: rotate(180deg);
+            filter: invert(.5);
+            border-radius: 0px 0px 10px 10px;
+        }
+
+        div#scaleButton {
+            z-index: 4;
+            width: 100px;
+            height: 100px;
+            background: #000;
+            position: fixed;
+        }
+
+        .menu-zoom {
+            z-index: 2;
+            background-size: 100%;
+            position: fixed;
+            width: 8vh;
+            opacity: 40%;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 8vh;
+            transition: all .8s ease-in-out;
+            left: calc(61% + 9.5vh);
+        }
+
+        .keyboard-container, .info-container {
+            width: 100%;
+            height: 100%;
+            padding: 5vw;
+            background: #000000b8;
+            backdrop-filter: blur(10px);
+            position: fixed;
+            display: flex;
+            z-index: 2;
+            transition: transform .5s cubic-bezier(0.25, 0.46, 0.45, 0.94),opacity .5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform-origin 0s;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: baseline;
+        }
+
+        .key, .key-n {
+            width: 8vw;
+            height: 8vw;
+            display: flex;
+            background-color: #000000a6;
+            color: white;
+            border: none;
+            font-size: 5vw;
+            align-items: center;
+            border: 2px solid #e0e0e059;
+            text-shadow: 2px 2px 1px black;
+            border-radius: 1.5vw;
+            font-weight: bold;
+            font-family: open;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all .3s ease-in-out;
+            margin: .5vw .5vw;
+            justify-content: center;
+        }
+
+        .keyboard {
+            display: grid;
+            font-family: open, sans-serif;
+            align-content: center;
+            justify-items: center;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            justify-content: center;
+        }
+
+        div#ip-display {
+            background: #FFF;
+            width: 40vw;
+            height: 9vw;
+            display: flex;
+            font-size: 5vw;
+            color: #FFF;
+            border: .3vw solid #e0e0e0;
+            background-color: #f5f5f51c;
+            border-radius: 1.5vw;
+            text-shadow: 2px 2px 1px black;
+            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            animation: flash 1s infinite cubic-bezier(0.55, 0.09, 0.68, 0.53);
+        }
+
+        .keyboard-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 34.5vw;
+            justify-content: space-between;
+        }
+
+        .msg-key {
+            color: #FFF;
+            font-size: 5vw;
+            text-shadow: 2px 2px 1px black;
+        }
+
+        .iframe-scaler {
+            transform: scale(1);
+            width: 136.5%;
+            height: 136.5%;
+        }
+
+        @keyframes flash {
+            0% {
+                border: .3vw solid #e0e0e059;
+            }
+
+            50% {
+                border: .3vw solid #c4c4c4;
+            }
+
+            100% {
+                border: .3vw solid #e0e0e059;
+            }
+        }
+
+        .flashing {
+            animation: flash 1s infinite ease-in-out;
+        }
+
+        .inKey {
+            font-size: 5vw;
+            width: 40vw!important;
+            margin: 0!important;
+            height: 9vw;
+            border-radius: 1.5vw;
+            border: .3vw solid #e0e0e059;
+            display: flex;
+            background-color: #000000a6;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .some-keyboard {
+            transform: scale(.6);
+           
+            opacity: 0;
+            z-index: -2;
+        }
+
+        .key:active {
+            background: #ffffff36;
+        }
+
+        .loader, .loader:before, .loader:after {
+            border-radius: 50%;
+            width: 2.5em;
+            height: 2.5em;
+            animation-fill-mode: both;
+            animation: bblFadInOut 1.8s infinite ease-in-out;
+        }
+
+        .loader {
+            color: #FFF;
+            font-size: 1vw;
+            position: relative;
+            text-indent: -9999em;
+            transform: translateZ(0);
+            animation-delay: -0.16s;
+        }
+
+        .loader:before, .loader:after {
+            content: '';
+            position: absolute;
+            top: 0;
+        }
+
+        .loader:before {
+            left: -3.5em;
+            animation-delay: -0.32s;
+        }
+
+        .loader:after {
+            left: 3.5em;
+        }
+
+        @keyframes bblFadInOut {
+            0%, 80%, 100% {
+                box-shadow: 0 2.5em 0 -1.3em
+            }
+
+            40% {
+                box-shadow: 0 2.5em 0 0
+            }
+        }
+
+        .zoom-factor {
+            position: absolute;
+            left: 4px;
+            top: 1px;
+            font-size: 16px;
+        }
+
+        img.svg-logo {
+            width: 60vw;
+            filter: drop-shadow(0px 0px 10px #000) drop-shadow(0px 0px 15px #000) drop-shadow(0px 0px 30px #000);
+        }
+		.info-container {
+        display: flex;
+    padding: 0px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.anim-bg {
+    background-image: url(anim-bg.gif);
+    height: 10vw;
+    width: 100vw;
+    opacity: 10%;
+    background-size: 10vw;
+}
+    </style>
+</head>
+<body>
+<div class="menu-chev" style="top:1vh;display: none;"></div>
+<div class="menu-zoom" style="background-image: url(z1x.png);top:1vh;">
+    <div class="zoom-factor"></div>
+</div>
+<div class="sys-container nao-mostrar" style="display: none;transform:scale(0.5712)">
+    <iframe id="myIframe" src="" style="width: 175%; height: 175%;" frameborder="0"></iframe>
+</div>
+<div class="logo">
+    <img class="svg-logo" src="logo.svg" style="
+            width: 60vw;
+            ">
+</div>
+<div class="container">
+    <button id="openExample">Conectar via IP padrão (10.10.1.1)</button>
+    <div class="subcontainer">
+        <div class="info-btn"><img src="info.png" style="width: 4vw;"></div>
+    <button id="loadKeyboard" class="key-btn">Conectar via IP alternativo (usando roteador)</button>
+    <div class="demo-btn">D</div>
+</div>
+</div>
+<div class="overlay-preto">
+    <div class="msg">
+        <div class="msg-b">Carregando console, Aguarde...</div>
+        <div class="msg-c">Pode demorar até 30 segundos.</div>
+        <div class="loader"></div>
+    </div>
+</div>
+<div class="info-container" style="transition: all; display: none;"><div style="
+    font-size: 6vw;
+    color: #FFF;
+    margin-top: 3vw;
+    text-shadow: 1px 1px 2px BLACK;
+">Soundcraft UiHelper</div><div style="
+    font-size: 3vw;
+    color: #FFF;
+    text-shadow: 1px 1px 2px BLACK;
+">Desenvolvido por Lucas Silva</div><div class="insta-abre" style="
+    font-size: 2.5vw;
+    color: #FFF;
+    text-shadow: 1px 1px 2px BLACK;
+">Siga no instagram @lucas.mocochoc</div><div style="
+    height: 7vw;
+"></div><div style="
+    font-size: 2vw;
+    color: #FFF;
+    text-shadow: 1px 1px 2px BLACK;
+">Bibliotecas utilizadas: KlipperKiosk, AndroidX, Kotlin Corountines, Webview</div><div class="anim-bg"></div><div id="info-close" class="key-n" style="
+    position: fixed;
+    top: 4vw;
+    right: 4vw;
+"><img src="close.png" style="
+    width: 4vw;
+"></div></div>
+<div class="keyboard-container some-keyboard">
+    <div class="keyboard-header">
+        <div class="msg-key">DIGITE O IP</div>
+        <div class="screen" id="ip-display"></div>
+        <button id="loadUrl" class="inKey">CONECTAR</button>
+    </div>
+    <div class="keyboard">
+        <div class="key">1</div>
+        <div class="key">2</div>
+        <div class="key">3</div>
+        <div class="key">4</div>
+        <div class="key">5</div>
+        <div class="key">6</div>
+        <div class="key">7</div>
+        <div class="key">8</div>
+        <div class="key">9</div>
+        <div class="key">.</div>
+        <div class="key">0</div>
+        <div class="key clear"><img src="backspace.png" style="
+    width: 4vw;
+"></div>
+    </div>
+    <div id="key-close" class="key-n"><img src="close.png" style="
+    width: 4vw;
+"></div>
+</div>
+<script src="jquery-local.js"></script>
+<script>
+    $(document).ready(function() {
+
+        var ipArray = ["", "", "", ""];
+        var segmentIndex = 0;
+        var url = '';
+        $('#ip-display').text(localStorage.getItem("url"));
+
+        function updateIpDisplay() {
+
+            $('#ip-display').text(ipArray.filter(s => s !== "").join("."));
+        }
+        $('.key').on('click', function() {
+            var value = $(this).text();
+
+            if ($(this).hasClass('clear')) {
+
+                if (ipArray[segmentIndex].length > 0) {
+                    ipArray[segmentIndex] = ipArray[segmentIndex].slice(0, -1);
+
+                } else if (segmentIndex > 0) {
+                    segmentIndex--;
+
+                    ipArray[segmentIndex] = ipArray[segmentIndex].slice(0, -1);
+
+                }
+
+                updateIpDisplay();
+                return;
+            }
+
+            if (value === ".") {
+                if (segmentIndex < 3 && ipArray[segmentIndex] !== "") {
+                    segmentIndex++;
+
+                }
+                updateIpDisplay();
+                return;
+            }
+
+            if (ipArray[segmentIndex].length < 3) {
+
+                ipArray[segmentIndex] += value;
+            }
+
+            if (ipArray[segmentIndex].length === 3 && segmentIndex < 3) {
+                segmentIndex++;
+            }
+
+            updateIpDisplay();
+        });
+
+        function showOverlayAndRedirect(url) {
+            $('.keyboard-container').addClass('some-keyboard');
+            $('.overlay-preto').fadeIn(500);
+            $('.sys-container').fadeIn(500);
+
+            $('.sys-container').html('<iframe id="myIframe" src="' + url + '" style="width: 100%; height: 100%;" frameborder="0"></iframe>');
+            $('#myIframe').on('load', function() {
+                setTimeout( () => {
+                    $('.sys-container').removeClass('nao-mostrar').addClass('mostrar');
+                    $('.menu-zoom').removeClass('zoom-nao-mostrar');
+                    $('.menu-chev').removeClass('chev-nao-mostrar').addClass('chev-mostrar');
+
+                }
+                , 4000);
+                setTimeout( () => {
+                    $('.overlay-preto').fadeOut(500);
+                    $('.menu-chev').fadeIn(500);
+                }
+                , 5500);
+            });
+        }
+
+        function scaleUix(index) {
+            const scales = [{
+                scale: 1,
+                factor: '100%',
+                zfactor: 'z1x.png',
+                menutop: '.5vw'
+            }, {
+                scale: 1.0525,
+                factor: '95%',
+                zfactor: 'z2x.png',
+                menutop: '.9vw'
+            }, {
+                scale: 1.0986,
+                factor: '91%',
+                zfactor: 'z3x.png',
+                menutop: '1.3vw'
+            }, {
+                scale: 1.2,
+                factor: '125%',
+                zfactor: 'z4x.png',
+                menutop: '1.6vw'
+            }];
+
+            const {scale, factor, menutop, zfactor} = scales[index];
+
+            $('.msg-b').text('Redimensionando...');
+            $('.msg-c').text('');
+            $('.overlay-preto').fadeIn(500);
+
+            setTimeout( () => {
+                $('.sys-container').css({
+                    'transform': 'scale(' + scale + ')'
+                });
+                $('#myIframe').css({
+                    'width': factor,
+                    'height': factor
+                });
+                $('.chev-mostrar').css({
+                    'top': menutop
+                });
+                $('.menu-zoom').css({
+                    'top': menutop,
+                    'background-image': 'url(' + zfactor + ')'
+                });
+            }
+            , 550);
+            setTimeout( () => {
+                $('.overlay-preto').fadeOut(500);
+            }
+            , 1550);
+        }
+
+        let currentIndex = 1;
+        $('.menu-zoom').click( () => {
+            scaleUix(currentIndex);
+            currentIndex = (currentIndex + 1) % 4;
+
+        }
+        );
+
+		$('.info-btn').click( () => {
+            $('.info-container').fadeIn(500);
+
+        }
+        );
+		$('#info-close').click( () => {
+            $('.info-container').fadeOut(500);
+
+        }
+        );
+
+
+
+
+        function showHelpOverlay() {
+            $('.tutorial-container').fadeIn(500);
+        }
+
+        $('#openExample').on('click', () => {
+            $('.msg-b').text('Carregando console, Aguarde...');
+            $('.msg-c').text('Pode demorar até 30 segundos.');
+            showOverlayAndRedirect('http://10.10.1.1');
+        }
+        );
+
+        $('.menu-chev').on('click', () => {
+            $('.sys-container').toggleClass('mostrar nao-mostrar');
+            $('.menu-chev').toggleClass('chev-mostrar chev-nao-mostrar');
+            $('.menu-zoom').toggleClass('zoom-nao-mostrar');
+        }
+        );
+
+        $('.demo-btn').on('click', () => {
+            $('.msg-b').text('Carregando demonstração, Aguarde...');
+            $('.msg-c').text('Pode demorar até 30 segundos.');
+            showOverlayAndRedirect('http://www.soundcraft.com/ui24-software-demo/mixer.html');
+        }
+        );
+        var clickX = 0;
+        var clickY = 0;
+
+        // Function to set the transform-origin based on click coordinates
+        function setTransformOrigin(element, x, y) {
+            element.css({
+                'transform-origin': x + 'px ' + y + 'px'
+            });
+        }
+
+        // Capture the click coordinates when the .key-btn is clicked
+        $('.key-btn').on('click', function(event) {
+            clickX = event.clientX;
+            clickY = event.clientY;
+
+            // Set the transform-origin using the reusable function
+            setTransformOrigin($('.keyboard-container'), clickX, clickY);
+
+            // Log the click coordinates for debugging
+            console.log('Click X:', clickX);
+            console.log('Click Y:', clickY);
+
+            // Use a small delay to ensure the transform-origin is applied before fade-in
+            setTimeout( () => {
+                // Remove the class to initiate the opening animation
+                $('.keyboard-container').removeClass('some-keyboard');
+            }
+            , 10);
+            // Delay of 20ms to allow CSS changes to apply
+        });
+
+        // Handle the close button event
+        $('#key-close').on('click', () => {
+
+
+                // Remove the class to initiate the opening animation
+                $('.keyboard-container').addClass('some-keyboard');
+
+        }
+        );
+
+        $('.help-user').on('click', showHelpOverlay);
+        $('.help-close').on('click', () => {
+            $('.tutorial-container').fadeOut(500);
+        }
+        );
+
+        $('#loadUrl').on('click', () => {
+            url = $('#ip-display').text();
+            localStorage.setItem("url", url);
+            if (url) {
+                const fullUrl = 'http://' + url;
+                $('.msg-b').text('Carregando console, Aguarde...');
+                $('.msg-c').text('Pode demorar até 30 segundos.');
+                showOverlayAndRedirect(fullUrl);
+            } else {
+                $('.msg-b').text('Por favor, insira um IP válido.');
+                $('.msg-c').text('');
+                $('.overlay-preto').fadeIn(500);
+                setTimeout( () => {
+                    $('.overlay-preto').fadeOut(500);
+                }
+                , 1250);
+            }
+        }
+        );
+    });
+</script>
+</body>
+</html>
