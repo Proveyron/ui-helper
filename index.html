@@ -6,6 +6,39 @@
     <meta name="theme-color" content="#000000" />
     <title>Soundcraft Ui Helper</title>
 	<script>
+		(function appendRandomQueryToResources() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+  function getRandomString(length = 5) {
+    let str = '';
+    for (let i = 0; i < length; i++) {
+      str += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return str;
+  }
+
+  function appendQueryParam(url) {
+    // Remove existing query string and add new random one
+    const baseUrl = url.split('?')[0];
+    return baseUrl + '?' + getRandomString();
+  }
+
+  function updateElementUrl(element, attr) {
+    if (!element.hasAttribute(attr)) return;
+    const url = element.getAttribute(attr);
+    if (url && (url.endsWith('.js') || url.endsWith('.css') || url.endsWith('.json'))) {
+      element.setAttribute(attr, appendQueryParam(url));
+    }
+  }
+
+  // For <script src="...">
+  document.querySelectorAll('script[src]').forEach(el => updateElementUrl(el, 'src'));
+
+  // For <link href="..."> (usually for css or json if used)
+  document.querySelectorAll('link[href]').forEach(el => updateElementUrl(el, 'href'));
+})();
+	</script>
+	<script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
       .then(registration => {
