@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#000000" />
     <title>Soundcraft Ui Helper</title>
 	<script>
-		(function appendRandomQueryToResources() {
+(function appendRandomQueryToManifestAndSW() {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
   function getRandomString(length = 5) {
@@ -18,25 +18,26 @@
   }
 
   function appendQueryParam(url) {
-    // Remove existing query string and add new random one
     const baseUrl = url.split('?')[0];
     return baseUrl + '?' + getRandomString();
   }
 
-  function updateElementUrl(element, attr) {
-    if (!element.hasAttribute(attr)) return;
-    const url = element.getAttribute(attr);
-    if (url && (url.endsWith('.js') || url.endsWith('.css') || url.endsWith('.json'))) {
-      element.setAttribute(attr, appendQueryParam(url));
-    }
+  const head = document.head;
+
+  // manifest.json usually linked with <link rel="manifest" href="...">
+  const manifestLink = head.querySelector('link[rel="manifest"][href]');
+  if (manifestLink) {
+    manifestLink.href = appendQueryParam(manifestLink.href);
   }
 
-  // For <script src="...">
-  document.querySelectorAll('script[src]').forEach(el => updateElementUrl(el, 'src'));
-
-  // For <link href="..."> (usually for css or json if used)
-  document.querySelectorAll('link[href]').forEach(el => updateElementUrl(el, 'href'));
+  // sw.js usually registered via <script src="sw.js"> or via JS registration
+  // If there's a <script> in head with src=sw.js, update it
+  const swScript = head.querySelector('script[src$="sw.js"]');
+  if (swScript) {
+    swScript.src = appendQueryParam(swScript.src);
+  }
 })();
+
 	</script>
 	<script>
   if ('serviceWorker' in navigator) {
