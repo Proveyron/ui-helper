@@ -41,7 +41,10 @@ self.addEventListener('activate', event => {
     caches.keys().then(keys =>
       Promise.all(
         keys.map(key => {
-          if (key !== CACHE_NAME) return caches.delete(key);
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+          return null;
         })
       )
     )
@@ -54,4 +57,10 @@ self.addEventListener('fetch', event => {
     caches.match(event.request, { ignoreSearch: true }).then(response => {
       if (response) return response;
       console.warn(`🚫 Not in cache: ${event.request.url}`);
-      return new Response('', { status: 404, statusText: 'Offline resource not cached' });
+      return new Response('', {
+        status: 404,
+        statusText: 'Offline resource not cached'
+      });
+    })
+  );
+});
